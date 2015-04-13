@@ -1,0 +1,7 @@
+package edu.neu.cs5200.Site.models;
+
+@Entity
+
+public class Tower {
+
+}

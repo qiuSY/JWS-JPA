@@ -1,0 +1,47 @@
+package edu.neu.cs5200.Site.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Query;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
+import edu.neu.cs5200.Site.models.Site;
+
+
+@Path("/api")
+public class SiteService {
+
+	@GET
+	@Path("/site")
+	@Produces(MediaType.APPLICATION_JSON)
+	//public List<Site> f​indAllSites(​)
+	public List<Site> findAllSites()
+	{
+		
+		List<Site>Site=new ArrayList<Site>();
+		Site m1=new Site();
+		m1.setName("M1");
+		Site m2=new Site();
+		m2.setName("M2");
+		Site m3=new Site();
+		m3.setName("M3");
+		Site m4=new Site();
+		m4.setName("M4");
+		
+		Site.add(m1);
+		Site.add(m2);
+		Site.add(m3);
+		Site.add(m4);
+		return Site;
+		
+		
+		//SiteDAO dao=new SiteDAO();
+		//return dao.findAllSites();
+	}
+}

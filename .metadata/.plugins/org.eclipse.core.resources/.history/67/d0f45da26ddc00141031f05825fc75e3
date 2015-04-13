@@ -1,0 +1,25 @@
+package edu.neu.cs5200.Site.models;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.*;
+
+@Entity
+//@Table(name=tower)class name does not match the table name
+public class Tower {
+
+	@Id
+	private Integer id;
+	private String name;
+	private Float height;
+	private String sides;
+	//do not have foreign key in this class
+	
+	//reference to Site,we are many side
+	//EAGER,when you fetch site, fetch all tower
+	//And what is the field we are gonna to join
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="siteId")
+	
+	private Site site;
+}

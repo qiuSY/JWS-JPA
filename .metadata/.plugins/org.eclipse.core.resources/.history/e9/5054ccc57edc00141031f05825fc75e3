@@ -1,0 +1,132 @@
+package edu.neu.cs5200.Site.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
+import edu.neu.cs5200.Site.models.Site;
+import edu.neu.cs5200.Site.models.Tower;
+
+public class SiteDAO {
+	
+	EntityManagerFactory factory = Persistence.createEntityManagerFactory("Site");
+	EntityManager em = factory.createEntityManager();
+	
+	
+	//public Site f​indSite(​int siteId)
+	public Site findSite(int siteId)
+	{
+		return em.find(Site.class, siteId);
+	}
+	
+	//public List<Site> f​indAllSites(​)
+	public List<Site> findAllSites()
+	{
+		Query query = em.createQuery("select site from Site site");
+		return (List<Site>)query.getResultList();
+	}
+	
+	//public List<Site> ​updateSite(​int siteId, Site site)
+	public List<Site> updateSite (int siteId,Site site)
+	{
+		List<Site> sites = new ArrayList<Site>();
+		em.getTransaction().begin();
+
+		site.setId(siteId);
+		em.merge(site);
+		
+		Query query=em.createQuery("select site from Site site");
+		sites=query.getResultList();
+		
+		em.getTransaction().commit();
+		em.close();
+		return sites;
+	}
+	
+	//public List<Site> r​emoveSite(​int siteId)
+	public List<Site> removeSite (int siteId)
+	{
+		List<Site> sites = new ArrayList<Site>();
+		
+		Site site=null;
+		
+		em.getTransaction().begin();
+
+		site = em.find(Site.class, siteId);
+		em.remove(site);
+		
+		Query query=em.createQuery("select site from Site site");
+		sites=query.getResultList();
+		
+		em.getTransaction().commit();
+		em.close();
+		return sites;
+	}
+	
+	//public List<Site> ​createSite(​Site site) 
+	
+	public List<Site> createSite (Site site)
+	{
+		List<Site> sites = new ArrayList<Site>();
+				
+		em.getTransaction().begin();
+
+		em.persist(site);
+		
+		Query query=em.createQuery("select site from Site site");
+		sites=query.getResultList();
+		
+		em.getTransaction().commit();
+		em.close();
+		return sites;
+	}
+	
+	public void addTower(Integer siteId, Tower tower)
+	{
+		em.getTransaction().begin();
+		Site site= em.find( Site.class, siteId);
+		tower.setSite(site);
+		site.getTowers().add(tower);
+		em.merge(site);
+		em.getTransaction().commit();
+	}
+	
+	public static void main(String[] args) {
+		SiteDAO dao = new SiteDAO();
+		
+	/*
+		Site site = dao.findSite(1);
+		System.out.println(site.getName());
+		System.out.println(site.getTowers().size());
+		
+		List<Tower> towers=site.getTowers();
+		for(Tower tower:towers)
+			System.out.println(tower.getName());
+*/
+		/*List<Site> sites = dao.findAllSites();
+		for(Site site : sites)
+		{
+			System.out.println(site.getName());
+		}*/
+	
+		/*
+		Site site = new Site();
+		site.setName("hagaaa");
+		site.setLatitude("123");
+		dao.updateSite(1, site);
+		*/
+		
+		//dao.removeSite(2);
+		/*Site site = new Site(null, "Alsbjkb", "Plot", "Poster");
+		dao.createSite(site);
+*/
+		Tower tower=new Tower(null,"hdasdsahu",(float) 2.1,"dada",null);
+		dao.addTower(5, tower);
+		
+	}
+
+}
